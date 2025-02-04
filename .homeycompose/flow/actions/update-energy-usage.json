@@ -1,0 +1,23 @@
+{
+  "title": {
+    "en": "Oppdater forbruk"
+  },
+  "titleFormatted": {
+    "en": "Oppdater forbruk med [[effect]] w"
+  },
+  "hint": {
+    "en": "Bruk dette kortet for å oppdatere ditt daglige energiforbruk"
+  },
+  "args": [
+    {
+      "type": "number",
+      "name": "effect",
+      "placeholder": {
+        "en": "Energy"
+      },
+      "min": 0,
+      "max": 10000000,
+      "step": 1
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+.power-legends {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: var(--homey-su-4);
+}
+
+.power-legends__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--homey-su-1);
+}
+
+.power-chart {
+  font-size: 12px;
+  width: 100%;
+  min-width: 100%;
+  height: 200px;
+}
+
+.power-grid {
+  display: grid;
+  grid-gap: var(--homey-su-2);
+  grid-template-columns: 50% 50%;
+}
+
+.power-card {
+  background-color: var(--homey-color-mono-200);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--homey-su-2);
+  border-radius: var(--homey-border-radius-default);
+}
+
+.power-card__number {
+  font-size: var(--homey-font-size-xxlarge);
+  margin-top: var(--homey-su-1);
+  margin-right: var(--homey-su-2);
+  display: inline-block;
+  color: var(--homey-color-white);
+  border-radius: var(--homey-border-radius-small);
+  padding: 0 var(--homey-su-2);
+  line-height: var(--homey-line-height-xxlarge);
+  font-weight: var(--homey-font-weight-bold);
+  background-color: var(--homey-color-mono-100);
+}
+
+.power-card__number--low {
+  background-color: var(--homey-color-green-600);
+}
+
+.power-card__number--low {
+  background-color: var(--homey-color-green-600);
+}

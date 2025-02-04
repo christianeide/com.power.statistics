@@ -1,0 +1,13 @@
+{
+  "name": {
+    "en": "Overview"
+  },
+  "height": 600,
+  "settings": [],
+  "api": {
+    "getUsageLogs": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}
