@@ -65,7 +65,20 @@ function WidgetApp() {
     getPowerPrices(activeDate).then(setPrices).catch(console.error);
   }, [activeDate]);
 
-  // TODO: Add update to todays date at midnight
+  // Effect to check and update activeDate every 5 minutes if not today
+  // This is used to update the date after midnight, as well as to reset the date
+  // after a give time
+  useEffect(() => {
+    const checkAndUpdateDate = () => {
+      if (!dateIsToday(activeDate)) {
+        setActiveDate(new Date());
+      }
+    };
+
+    const interval = setInterval(checkAndUpdateDate, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [activeDate]);
 
   // Effect for power usage - runs every 30 seconds
   useEffect(() => {
