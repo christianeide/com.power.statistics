@@ -2,7 +2,7 @@
 import { Graph } from './graph.mjs';
 import { Status } from './status.mjs';
 import { LineIcon, BarIcon } from './icons.mjs';
-import { getHourKey } from './utils.mjs';
+import { getHourKey, dateIsToday, dateIsTomorrow } from './utils.mjs';
 
 const { createElement, useState, useEffect } = React;
 
@@ -64,6 +64,8 @@ function WidgetApp() {
   useEffect(() => {
     getPowerPrices(activeDate).then(setPrices).catch(console.error);
   }, [activeDate]);
+
+  // TODO: Add update to todays date at midnight
 
   // Effect for power usage - runs every 30 seconds
   useEffect(() => {
@@ -136,6 +138,33 @@ function WidgetApp() {
           Pris
           <${LineIcon} />
         </div>
+        <div class="homey-text-small power-legends__nav">
+          <button
+            class="power-legends__nav-button power-legends__nav-button--left"
+            onClick=${() =>
+              setActiveDate(
+                new Date(
+                  new Date(activeDate).setDate(activeDate.getDate() - 1),
+                ),
+              )}
+          >
+            ${'<'}
+          </button>
+
+          ${dateIsToday(activeDate) ? 'I dag' : activeDate.toLocaleDateString()}
+          <button
+            class="power-legends__nav-button"
+            onClick=${() =>
+              setActiveDate(
+                new Date(
+                  new Date(activeDate).setDate(activeDate.getDate() + 1),
+                ),
+              )}
+            disabled=${dateIsTomorrow(activeDate)}
+          >
+            ${'>'}
+          </button>
+        </div>
         <div class="homey-text-small power-legends__item">
           <${BarIcon} />
           Forbruk</div
@@ -156,29 +185,6 @@ function WidgetApp() {
         dailyPriceVariation=${dailyPriceVariation}
         minPrice=${minPrice}
       />
-
-      <br />
-
-      <br /><br />
-      <p>Viser strøm for ${activeDate.toLocaleDateString()}</p>
-      <button
-        onClick=${() =>
-          setActiveDate(
-            new Date(new Date(activeDate).setDate(activeDate.getDate() - 1)),
-          )}
-        >Forrige dag</button
-      >
-      <button
-        onClick=${() =>
-          setActiveDate(
-            new Date(new Date(activeDate).setDate(activeDate.getDate() + 1)),
-          )}
-        >Neste dag</button
-      >
-      <button onClick=${() => setActiveDate(new Date())}>I dag</button>
-      <button onClick=${() => setActiveDate(new Date('7 juli 2024'))}
-        >07.07.2024</button
-      >
     </div>
   `;
 }

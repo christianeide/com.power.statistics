@@ -12,6 +12,34 @@
   gap: var(--homey-su-1);
 }
 
+.power-legends__nav {
+  display: grid;
+  align-items: center;
+  gap: var(--homey-su-1);
+  grid-template-columns: 1fr auto 1fr;
+  flex-grow: 1;
+}
+
+.power-legends__nav-button {
+  border: none;
+  background: transparent;
+  padding: 0 var(--homey-su-1);
+  color: var(--homey-color-mono-600);
+  text-align: left;
+}
+
+.power-legends__nav-button:active:not(:disabled) {
+  background-color: var(--homey-color-mono-100);
+}
+
+.power-legends__nav-button:disabled {
+  color: var(--homey-color-mono-200);
+}
+
+.power-legends__nav-button--left {
+  text-align: right;
+}
+
 .power-chart {
   font-size: 12px;
   width: 100%;

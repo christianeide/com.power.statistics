@@ -1,6 +1,6 @@
 'use strict';
 import { getPriceColor } from './colors.mjs';
-import { getCurrentHourKey } from './utils.mjs';
+import { getCurrentHourKey, dateIsToday } from './utils.mjs';
 
 const { createElement } = React;
 const {
@@ -33,7 +33,7 @@ export function Graph({
   minPrice,
 }) {
   const hourNow = getCurrentHourKey();
-  const isToday = new Date().toDateString() == activeDate.toDateString();
+  const isToday = dateIsToday(activeDate);
 
   const calulatedHourlyUsage = calculateEstimatedHourlyUsage(
     data.find((d) => d.time === hourNow)?.usageHomey || 0,
