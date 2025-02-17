@@ -50,7 +50,7 @@
 .power-grid {
   display: grid;
   grid-gap: var(--homey-su-2);
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 1fr 1fr;
 }
 
 .power-card {

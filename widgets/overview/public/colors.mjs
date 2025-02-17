@@ -2,7 +2,7 @@
 const HOMEYCOLORGREENRGB = 'rgb(50,159,0)';
 const HOMEYCOLORYELLOWRGB = 'rgb(255,132,0)';
 const HOMEYCOLORREDRGB = 'rgb(216,28,29)';
-const MINIMUMDAILYVARIATION = 40;
+const MINIMUMDAILYVARIATION = 10;
 
 export function getBooleanColorScale(value) {
   return value ? HOMEYCOLORGREENRGB : HOMEYCOLORREDRGB;

@@ -2,7 +2,12 @@
 import { Graph } from './graph.mjs';
 import { Status } from './status.mjs';
 import { LineIcon, BarIcon } from './icons.mjs';
-import { getHourKey, dateIsToday, dateIsTomorrow } from './utils.mjs';
+import {
+  getHourKey,
+  dateIsToday,
+  dateIsTomorrow,
+  calculateTotalPrice,
+} from './utils.mjs';
 
 const { createElement, useState, useEffect } = React;
 
@@ -110,25 +115,26 @@ function WidgetApp() {
     const time = getHourKey(i);
     return {
       time,
-      price: prices[i]?.value || 0,
+      originalPrice: prices[i]?.value || 0,
+      price: calculateTotalPrice(prices[i]?.value || 0),
       usageHomey:
         settingsUsage.find((entry) => entry?.time === time)?.usage || 0,
     };
   });
 
   // Calculate all price-related values in a single prices.reduce
-  const priceStats = prices.reduce(
+  const priceStats = completeDataSet.reduce(
     (stats, current) => {
       // Sum for average
-      stats.sum += current.value;
+      stats.sum += current.price;
 
       // Track max and min
-      if (!stats.max || current.value > stats.max.value) stats.max = current;
-      if (!stats.min || current.value < stats.min.value) stats.min = current;
+      if (!stats.max || current.price > stats.max.price) stats.max = current;
+      if (!stats.min || current.price < stats.min.price) stats.min = current;
 
       // Track current hour price
       const currentHour = new Date().getHours();
-      if (new Date(current.time).getHours() === currentHour) {
+      if (current.time === getHourKey(currentHour)) {
         stats.current = current;
       }
 
@@ -137,12 +143,12 @@ function WidgetApp() {
     { sum: 0, max: null, min: null, current: null },
   );
 
-  const maxPrice = priceStats.max?.value || 0;
-  const minPrice = priceStats.min?.value || 0;
+  const maxPrice = priceStats.max?.price || 0;
+  const minPrice = priceStats.min?.price || 0;
   const dailyAverage = Math.round(priceStats.sum / 24);
   const dailyPriceVariation =
     maxPrice && minPrice ? Math.round(maxPrice - minPrice) : 0;
-  const currentPrice = priceStats.current?.value || 0;
+  const currentPrice = priceStats.current?.price || 0;
 
   return html`
     <div class="power-wrapper">
@@ -187,7 +193,6 @@ function WidgetApp() {
       <${Graph}
         data=${completeDataSet}
         activeDate=${activeDate}
-        dailyAverage=${dailyAverage}
         dailyPriceVariation=${dailyPriceVariation}
         minPrice=${minPrice}
       />

@@ -25,13 +25,7 @@ function calculateEstimatedHourlyUsage(currentUsage) {
   return (currentUsage / minutesIntoHour) * 60;
 }
 
-export function Graph({
-  data,
-  activeDate,
-  dailyAverage,
-  dailyPriceVariation,
-  minPrice,
-}) {
+export function Graph({ data, activeDate, dailyPriceVariation, minPrice }) {
   const hourNow = getCurrentHourKey();
   const isToday = dateIsToday(activeDate);
 
@@ -86,13 +80,6 @@ export function Graph({
             horizontalPoints=${[45, 75, 105, 135]} 
           />
 
-          <${ReferenceLine}
-            yAxisId="left"
-            y=${dailyAverage}
-            stroke="var(--homey-color-orange-500)" 
-            strokeDasharray="3 3"
-          />
-
           <${Bar} 
             yAxisId="right"
             dataKey="usageHomey" 
@@ -117,11 +104,21 @@ export function Graph({
                     x2=${hourNow}
                     fill="transparent"
                     strokeWidth=${1}
-                    stroke="var(--homey-color-blue-100)"
+                    stroke="var(--homey-color-orange-500)"
                     strokeDasharray="2 2"
                   />`
               : null
           }
+
+        <${Line} 
+            yAxisId="left"
+            dataKey="originalPrice" 
+            stroke="var(--homey-color-mono-500)" 
+            strokeWidth=${1} 
+            strokeDasharray="2 2"
+            isAnimationActive=${false} 
+            dot=${false}
+          />
 
           <${Line} 
             yAxisId="left"
@@ -130,7 +127,7 @@ export function Graph({
             strokeWidth=${3} 
             dot=${PriceDot}
             isAnimationActive=${false} 
-          />
+          /> 
 
           <${YAxis} 
             type="number" 

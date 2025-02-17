@@ -10,8 +10,10 @@ export function Status({
   dailyPriceVariation,
   minPrice,
 }) {
-  // TODO: Handle if not today, then we will not show values here
-  // TODO: handle fireplace
+  /* 
+  Fireplace values from https://vedkalkulator.no/Home/ShowMain
+  */
+
   return html`
     <div class="power-grid homey-text-small">
       <${PriceCard}
@@ -25,7 +27,7 @@ export function Status({
       </${PriceCard}>
 
       <${PriceCard}
-        value=${currentPrice > 160 ? 'Ja' : 'Nei'}
+        value=${currentPrice > 145 ? 'Ja' : 'Nei'}
         getFillColor=${(value) => {
           return getBooleanColorScale(value === 'Nei');
         }}
