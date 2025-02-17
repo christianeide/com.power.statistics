@@ -2,7 +2,7 @@
   "name": {
     "en": "Overview"
   },
-  "height": 600,
+  "height": 416,
   "settings": [],
   "api": {
     "getUsageLogs": {
