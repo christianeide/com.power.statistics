@@ -82,3 +82,30 @@
 .power-card__number--low {
   background-color: var(--homey-color-green-600);
 }
+
+.power-headline-text {
+  font-size: var(--homey-font-size-large);
+  line-height: var(--homey-line-height-large);
+  font-weight: var(--homey-font-weight-bold);
+  margin-top: var(--homey-su-6);
+  margin-bottom: var(--homey-su);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.power-headline-text__label {
+  font-size: var(--homey-font-size-small);
+  line-height: var(--homey-line-height-small);
+  font-weight: var(--homey-font-weight-regular);
+  display: flex;
+  gap: var(--homey-su-1);
+}
+
+.power-headline-text__label:active {
+  background-color: var(--homey-color-mono-200);
+}
+
+.power-headline-text__input {
+  accent-color: var(--homey-color-success);
+}
