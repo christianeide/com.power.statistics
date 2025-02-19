@@ -62,12 +62,16 @@
       "name": {
         "en": "Overview"
       },
-      "height": 416,
+      "height": 634,
       "settings": [],
       "api": {
         "getUsageLogs": {
           "method": "GET",
           "path": "/"
+        },
+        "getBillCost": {
+          "method": "GET",
+          "path": "/bill-cost"
         }
       },
       "id": "overview"

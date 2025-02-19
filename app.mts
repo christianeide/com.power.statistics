@@ -1,4 +1,5 @@
 import Homey from 'homey';
+import { HomeyAPI } from 'homey-api';
 
 interface EnergyEntry {
   time: string;
@@ -8,6 +9,7 @@ interface EnergyEntry {
 export default class PowerStatistics extends Homey.App {
   lastConsumptionUpdate: number | null = null;
   insightsLog: Homey.InsightsLog | null = null;
+  homeyApi: HomeyAPI | null = null;
   /**
    * onInit is called when the app is initialized.
    */
@@ -27,6 +29,10 @@ export default class PowerStatistics extends Homey.App {
       });
     }
     // await this.homey.insights.deleteLog(insightsLog);
+
+    this.homeyApi = await HomeyAPI.createAppAPI({
+      homey: this.homey,
+    });
 
     this.homey.flow
       .getActionCard('update-energy-usage')
@@ -87,6 +93,26 @@ export default class PowerStatistics extends Homey.App {
 
     // Clean up old data (keep last 30 days)
     this.cleanupOldData();
+
+    // We do a little hack here and get the bill cost directly from the device
+    //@ts-expect-error geer
+    // TODO: Fix this
+    const devices = await this.homeyApi?.devices.getDevices();
+
+    // Filter devices whose name starts with "Strømregning"
+    const strømregningDevices = Object.values(devices).find((device: any) => {
+      return (
+        device.name && device.name.startsWith('Strømregning Lysthusbråten')
+      );
+    });
+
+    // @ts-expect-error geer
+    const dailyCost = strømregningDevices?.capabilitiesObj.meter_sum_day;
+    // @ts-expect-error geer
+    const monthlyCost = strømregningDevices?.capabilitiesObj.meter_sum_month;
+
+    this.homey.settings.set('dailyCost', dailyCost.value);
+    this.homey.settings.set('monthlyCost', monthlyCost.value);
   }
 
   async getEnergyUsage(energy: number, aDate: Date) {

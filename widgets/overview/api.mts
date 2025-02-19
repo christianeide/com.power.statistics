@@ -20,4 +20,16 @@ export default {
       return null;
     }
   },
+  async getBillCost({ homey }: { homey: Homey }) {
+    try {
+      const dailyCost = await homey.settings.get('dailyCost');
+      const monthlyCost = await homey.settings.get('monthlyCost');
+
+      return { dailyCost, monthlyCost };
+    } catch (error) {
+      homey.log('api error:', error);
+
+      return null;
+    }
+  },
 };
