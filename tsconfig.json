@@ -2,7 +2,7 @@
   /* Basic setup from https://www.totaltypescript.com/tsconfig-cheat-sheet */
   "compilerOptions": {
     /* Base Options: */
-    "outDir": "build/",
+    "outDir": ".homeybuild",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "ESNext",
