@@ -1,6 +1,7 @@
 'use strict';
 import { Graph } from './graph.mjs';
 import { Status } from './status.mjs';
+import { Bill } from './bill.mjs';
 import { LineIcon, BarIcon } from './icons.mjs';
 import {
   getHourKey,
@@ -52,6 +53,7 @@ function WidgetApp() {
   const [prices, setPrices] = useState([]);
   const [settingsUsage, setSettingsUsage] = useState([]);
   const [Homey, setHomey] = useState(null);
+  const [showSubsidy, setShowSubsidy] = useState(true);
 
   useEffect(() => {
     window.onHomeyReady = (homeyInstance) => {
@@ -113,10 +115,14 @@ function WidgetApp() {
 
   const completeDataSet = Array.from(Array(24)).map((_, i) => {
     const time = getHourKey(i);
+
+    const { originalPrice, subsidyPrice } = calculateTotalPrice(
+      prices[i]?.value || 0,
+    );
     return {
       time,
-      originalPrice: prices[i]?.value || 0,
-      price: calculateTotalPrice(prices[i]?.value || 0),
+      originalPrice,
+      price: showSubsidy ? subsidyPrice : originalPrice,
       usageHomey:
         settingsUsage.find((entry) => entry?.time === time)?.usage || 0,
     };
@@ -203,6 +209,22 @@ function WidgetApp() {
         dailyPriceVariation=${dailyPriceVariation}
         minPrice=${minPrice}
       />
+
+      <p class="power-headline-text">
+        Regning
+
+        <label class="power-headline-text__label">
+          <input
+            type="checkbox"
+            class="power-headline-text__input"
+            checked=${showSubsidy}
+            onChange=${() => setShowSubsidy(!showSubsidy)}
+          />
+          Strømstøtte
+        </label>
+      </p>
+
+      <${Bill} Homey=${Homey} completeDataSet=${completeDataSet} />
     </div>
   `;
 }

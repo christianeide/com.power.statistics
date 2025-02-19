@@ -61,7 +61,7 @@ export function calculateTotalPrice(price) {
   // Assume usage is always 1 kWh
   const usage = 1;
 
-  // Determine grid fee rate based on the current time period
+  // Determine grid fee rate based on the current time
   const now = new Date();
   const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
   const hour = now.getHours();
@@ -74,15 +74,19 @@ export function calculateTotalPrice(price) {
   // Day: 42.50 øre/kWh, Night/Weekend: 32.50 øre/kWh
   const gridFeeRate = isWeekday && isDaytime ? 42.5 : 32.5;
 
-  // Calculate electricity and grid fee costs based on 1 kWh consumption.
-  // NB! This do not take into account fastledd.
+  // Calculate grid fee cost based on 1 kWh consumption.
+  // Note: This does not take into account fastledd.
   const gridFeeCost = usage * gridFeeRate;
 
-  // Calculate effective electricity price after applying state support.
-  // Note: The state support only applies to the electricity price (not the grid fee).
-  const effectiveElectricityPrice = calculateEffectivePrice(price);
-  const effectiveTotalCost = effectiveElectricityPrice + gridFeeCost;
+  // Calculate original total cost without state support.
+  const originalTotalCost = price + gridFeeCost;
 
-  // Return both the original total cost and the effective total cost after state support.
-  return effectiveTotalCost;
+  // Calculate effective electricity price after applying state support.
+  const subsidyTotalCost = calculateEffectivePrice(price) + gridFeeCost;
+
+  // Return both the original and effective total costs.
+  return {
+    originalPrice: originalTotalCost,
+    subsidyPrice: subsidyTotalCost,
+  };
 }
