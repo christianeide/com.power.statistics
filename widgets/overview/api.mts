@@ -1,4 +1,3 @@
-'use strict';
 import type Homey from 'homey/lib/Homey.d.ts';
 
 export default {
