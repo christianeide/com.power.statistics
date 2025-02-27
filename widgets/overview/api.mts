@@ -21,10 +21,10 @@ export default {
   },
   async getBillCost({ homey }: { homey: Homey }) {
     try {
-      const dailyCost = await homey.settings.get('dailyCost');
-      const monthlyCost = await homey.settings.get('monthlyCost');
+      //@ts-expect-error getCosts is defined in app.mts
+      const costs = await homey.app.getCosts();
 
-      return { dailyCost, monthlyCost };
+      return costs;
     } catch (error) {
       homey.log('api error:', error);
 

@@ -15,11 +15,11 @@ export function Bill({ Homey, completeDataSet }) {
     const fetchData = () => {
       if (Homey) {
         Homey.api('GET', `/bill-cost`, {})
-          .then((data) => {
-            if (!data || !data.monthlyCost) {
+          .then((costs) => {
+            if (!costs) {
               return;
             }
-            setMonthlyCost(data.monthlyCost);
+            setMonthlyCost(costs);
           })
           .catch(console.error);
       }

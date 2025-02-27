@@ -93,26 +93,32 @@ export default class PowerStatistics extends Homey.App {
 
     // Clean up old data (keep last 30 days)
     this.cleanupOldData();
+  }
 
-    // We do a little hack here and get the bill cost directly from the device
-    //@ts-expect-error geer
-    // TODO: Fix this
-    const devices = await this.homeyApi?.devices.getDevices();
+  async getCosts() {
+    if (!this.homeyApi) {
+      return null;
+    }
+
+    //@ts-expect-error devices is defined in homey-api
+    const devices = await this.homeyApi.devices.getDevices();
+    if (!devices) {
+      return null;
+    }
 
     // Filter devices whose name starts with "Strømregning"
+    // We do a little hack here and get the bill cost directly from the device
     const strømregningDevices = Object.values(devices).find((device: any) => {
-      return (
-        device.name && device.name.startsWith('Strømregning Lysthusbråten')
-      );
+      return device.uri === 'homey:device:5a76b0d9-c910-4ac3-8d67-a391265328d6';
     });
 
-    // @ts-expect-error geer
-    const dailyCost = strømregningDevices?.capabilitiesObj.meter_sum_day;
-    // @ts-expect-error geer
+    // @ts-expect-error This contains monthly cost
     const monthlyCost = strømregningDevices?.capabilitiesObj.meter_sum_month;
+    if (!monthlyCost) {
+      return null;
+    }
 
-    this.homey.settings.set('dailyCost', dailyCost.value);
-    this.homey.settings.set('monthlyCost', monthlyCost.value);
+    return monthlyCost.value;
   }
 
   async getEnergyUsage(energy: number, aDate: Date) {
