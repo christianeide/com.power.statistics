@@ -3,6 +3,7 @@ import { Graph } from './graph.mjs';
 import { Status } from './status.mjs';
 import { Bill } from './bill.mjs';
 import { LineIcon, BarIcon } from './icons.mjs';
+import { BarGraph } from './graph_bar.mjs';
 import {
   getHourKey,
   dateIsToday,
@@ -225,6 +226,8 @@ function WidgetApp() {
       </p>
 
       <${Bill} Homey=${Homey} completeDataSet=${completeDataSet} />
+
+      <${BarGraph} />
     </div>
   `;
 }
