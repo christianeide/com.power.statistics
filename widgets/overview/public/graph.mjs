@@ -57,7 +57,7 @@ export function Graph({ data, activeDate, dailyPriceVariation, minPrice }) {
   };
 
   return html`
-      <${ResponsiveContainer} width="100%" height=${200} className="power-chart">
+      <${ResponsiveContainer} width="100%" height=${160} className="power-chart">
         <${ComposedChart} data=${data}>
 
         <defs>

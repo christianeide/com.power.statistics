@@ -63,14 +63,14 @@
 }
 
 .power-card__number {
-  font-size: var(--homey-font-size-xxlarge);
+  font-size: var(--homey-font-size-xlarge);
   margin-top: var(--homey-su-1);
   margin-right: var(--homey-su-2);
   display: inline-block;
   color: var(--homey-color-white);
   border-radius: var(--homey-border-radius-small);
   padding: 0 var(--homey-su-2);
-  line-height: var(--homey-line-height-xxlarge);
+  line-height: var(--homey-line-height-xlarge);
   font-weight: var(--homey-font-weight-bold);
   background-color: var(--homey-color-mono-100);
 }
