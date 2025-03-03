@@ -111,7 +111,7 @@ export function BarGraph({ Homey, dailyCost }) {
           <${Bar} dataKey="vvb" name="VVB" stackId="a" fill="var(--homey-color-blue-400)">
             ${renderLabelList('vvb')}
           </${Bar}>
-          <${Bar} dataKey="other" name="Annet" stackId="a" fill="var(--homey-color-green-400)">
+          <${Bar} dataKey="other" name="Annet" stackId="a" fill="var(--homey-color-orange-500)">
             ${renderLabelList('other')}
           </${Bar}>
           <${Bar} dataKey="unknown" name="Ukjent" stackId="a" fill="var(--homey-color-mono-300)">
