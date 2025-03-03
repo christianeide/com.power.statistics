@@ -1,11 +1,11 @@
 'use strict';
 import { getPriceColor, getBooleanColorScale } from './colors.mjs';
 import { PriceCard } from './card.mjs';
-
+import { calculateDailyCost } from './utils.mjs';
 const { createElement, useState, useEffect } = React;
 const html = htm.bind(createElement);
 
-export function Bill({ Homey, completeDataSet }) {
+export function Bill({ Homey, completeDataSet, dailyCost }) {
   // TODO: Consider calulating monthly cost based on daily costs instead
   const [monthlyCost, setMonthlyCost] = useState(0);
 
@@ -34,14 +34,6 @@ export function Bill({ Homey, completeDataSet }) {
     return () => clearInterval(interval);
   }, [Homey]);
 
-  const calculateDailyCost = () => {
-    // Sum up (usage * price) for each hour
-    return completeDataSet.reduce((sum, hour) => {
-      const hourCost = hour.usageHomey * (hour.price / 100); // Divide by 100 since price is in øre
-      return sum + hourCost;
-    }, 0);
-  };
-
   const savedToday = () => {
     // Normal usage profile in percentages for each hour
     // This profile is not science, but best guess based on online resources
@@ -54,10 +46,10 @@ export function Bill({ Homey, completeDataSet }) {
       '05': 2.5, // 2/80 * 100
       '06': 5, // 4/80 * 100
       '07': 7.5, // 6/80 * 100
-      '08': 3.75, // 3/80 * 100
+      '08': 5.0,
       '09': 2.5,
       10: 1.25,
-      11: 2.5,
+      11: 1.25,
       12: 1.25,
       13: 1.25,
       14: 2.5,
@@ -87,7 +79,7 @@ export function Bill({ Homey, completeDataSet }) {
       return sum + hourCost;
     }, 0);
 
-    const actualDailyCost = calculateDailyCost();
+    const actualDailyCost = dailyCost;
     // Return difference between normal usage cost and actual cost
     return Math.ceil(costWithNormalUsage - actualDailyCost);
   };
@@ -95,7 +87,7 @@ export function Bill({ Homey, completeDataSet }) {
   return html`
    <div class="power-grid homey-text-small">
       <${PriceCard}
-        value=${Math.round(calculateDailyCost())}
+        value=${Math.round(dailyCost)}
         getFillColor=${(value) => {
           return getPriceColor(value, 0, 145);
         }}

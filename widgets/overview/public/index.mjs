@@ -9,6 +9,7 @@ import {
   dateIsToday,
   dateIsTomorrow,
   calculateTotalPrice,
+  calculateDailyCost,
 } from './utils.mjs';
 
 const { createElement, useState, useEffect } = React;
@@ -157,6 +158,8 @@ function WidgetApp() {
     maxPrice && minPrice ? Math.round(maxPrice - minPrice) : 0;
   const currentPrice = priceStats.current?.price || 0;
 
+  const dailyCost = calculateDailyCost(completeDataSet);
+
   return html`
     <div class="power-wrapper">
       <div class="power-legends">
@@ -225,9 +228,13 @@ function WidgetApp() {
         </label>
       </p>
 
-      <${Bill} Homey=${Homey} completeDataSet=${completeDataSet} />
+      <${Bill}
+        Homey=${Homey}
+        dailyCost=${dailyCost}
+        completeDataSet=${completeDataSet}
+      />
 
-      <${BarGraph} />
+      <${BarGraph} Homey=${Homey} dailyCost=${dailyCost} />
     </div>
   `;
 }

@@ -90,3 +90,11 @@ export function calculateTotalPrice(price) {
     subsidyPrice: subsidyTotalCost,
   };
 }
+
+export function calculateDailyCost(completeDataSet) {
+  // Sum up (usage * price) for each hour
+  return completeDataSet.reduce((sum, hour) => {
+    const hourCost = hour.usageHomey * (hour.price / 100); // Divide by 100 since price is in øre
+    return sum + hourCost;
+  }, 0);
+}
