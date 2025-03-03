@@ -31,4 +31,16 @@ export default {
       return null;
     }
   },
+  async getUsageDistribution({ homey }: { homey: Homey }) {
+    try {
+      //@ts-expect-error getUsageDistribution is defined in app.mts
+      const usage = await homey.app.getUsageDistribution();
+
+      return usage;
+    } catch (error) {
+      homey.log('api error:', error);
+
+      return null;
+    }
+  },
 };

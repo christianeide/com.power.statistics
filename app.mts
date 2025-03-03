@@ -106,7 +106,6 @@ export default class PowerStatistics extends Homey.App {
       return null;
     }
 
-    // Filter devices whose name starts with "Strømregning"
     // We do a little hack here and get the bill cost directly from the device
     const strømregningDevices = Object.values(devices).find((device: any) => {
       return device.uri === 'homey:device:5a76b0d9-c910-4ac3-8d67-a391265328d6';
@@ -119,6 +118,41 @@ export default class PowerStatistics extends Homey.App {
     }
 
     return monthlyCost.value;
+  }
+
+  async getUsageDistribution() {
+    if (!this.homeyApi) {
+      return null;
+    }
+
+    //@ts-expect-error devices is defined in homey-api
+    const devices = await this.homeyApi.devices.getDevices();
+    if (!devices) {
+      return null;
+    }
+
+    const distribution: Record<string, number | null> = {
+      heat: null,
+      vvb: null,
+      other: null,
+    };
+
+    // This will get all the strømregning devices and sum up the usage for each category
+    Object.values(devices).forEach((device: any) => {
+      if (device.name.startsWith('A Pris')) {
+        distribution.other += device.capabilitiesObj.meter_sum_day.value;
+      }
+
+      if (device.name.startsWith('W Pris')) {
+        distribution.vvb += device.capabilitiesObj.meter_sum_day.value;
+      }
+
+      if (device.name.startsWith('V Pris')) {
+        distribution.heat += device.capabilitiesObj.meter_sum_day.value;
+      }
+    });
+
+    return distribution;
   }
 
   async getEnergyUsage(energy: number, aDate: Date) {

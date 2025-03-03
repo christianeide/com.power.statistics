@@ -12,6 +12,10 @@
     "getBillCost": {
       "method": "GET",
       "path": "/bill-cost"
+    },
+    "getUsageDistribution": {
+      "method": "GET",
+      "path": "/usage-distribution"
     }
   }
 }
