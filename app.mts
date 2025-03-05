@@ -140,15 +140,24 @@ export default class PowerStatistics extends Homey.App {
     // This will get all the strømregning devices and sum up the usage for each category
     Object.values(devices).forEach((device: any) => {
       if (device.name.startsWith('A Pris')) {
-        distribution.other += device.capabilitiesObj.meter_sum_day.value;
+        const value = device.capabilitiesObj.meter_sum_day.value;
+        if (value >= 0) {
+          distribution.other += value;
+        }
       }
 
       if (device.name.startsWith('W Pris')) {
-        distribution.vvb += device.capabilitiesObj.meter_sum_day.value;
+        const value = device.capabilitiesObj.meter_sum_day.value;
+        if (value >= 0) {
+          distribution.vvb += value;
+        }
       }
 
       if (device.name.startsWith('V Pris')) {
-        distribution.heat += device.capabilitiesObj.meter_sum_day.value;
+        const value = device.capabilitiesObj.meter_sum_day.value;
+        if (value >= 0) {
+          distribution.heat += value;
+        }
       }
     });
 
